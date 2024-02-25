@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario</title>
+    <style>
+        * {
+            user-select: none;
+        }
+
+        body {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0px;
+
+        }
+
+        .container {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        td {
+            margin: 0px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        tr {
+            background-color: antiquewhite;
+            display: flex;
+            gap: 0px;
+            padding: 0px;
+            margin: 0px;
+
+        }
+
+        td:hover {
+            background-color: #f0f0f0;
+        }
+
+        .otherMonth {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <div clas="container">
+        <div id="date"> </div>
+        <table>
+            <thead class="header">
+                <tr>
+                    <td>Lunes</td>
+                    <td>Martes</td>
+                    <td>Miercoles</td>
+                    <td>Jueves</td>
+                    <td>Viernes</td>
+                    <td>Sabado</td>
+                    <td>Domingo</td>
+                </tr>
+            </thead>
+            <tbody id="calendar">
+            </tbody>
+        </table>
+        <input type="button" value="next" onclick="nexttMonth()">
+    </div>
+</body>
+
+<script>
+    const date = new Date();
+    var month = date.getMonth() + 1;
+    const dayWeek = date.getDay();
+    const days = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+
+
+    const getDays = (day, month) => {
+        let dayMonth = new Date(2024, month - 1, day).getDay();
+        return dayMonth;
+    }
+
+    const dayMonth = (months) => {
+        let dayMonth = new Date(2024, months, 0).getDate();
+        let week = [];
+        let weekV2 = [];
+
+        for (let i = 1; i <= dayMonth; i++) {
+            let getDay = getDays(i, months);
+            weekV2.push([i, getDay]);
+            if (getDay === 0) {
+                week.push(weekV2);
+                weekV2 = [];
+            }
+        }
+        week.push(weekV2);
+        return week;
+    }
+
+    const createTablet = () => {
+        let eletenTable = document.getElementById('calendar');
+        let week = dayMonth(month);
+        let previusMonth = dayMonth(month - 1);
+        let nextMonth = dayMonth(month + 1);
+        week.forEach((day) => {
+            let newWeek = `<tr id="delete">`;
+            if (day[0][1] !== 1) {
+                for (let i = 0; i < day[0][1] - 1; i++) {
+                    newWeek += `<td class="otherMonth">${previusMonth[previusMonth.length - 1][i][0]}</td>`;
+                }
+            }
+            day.forEach((dayV2) => {
+                newWeek += `<td>${dayV2[0]}</td>`;
+            });
+            if(day.length < 7 && day[0][1] === 1){
+                nextMonth[0].forEach((next) => {
+                 newWeek += `<td class="otherMonth">${next[0]}</td>`;
+                });
+            }
+        
+            newWeek += `</tr>`;
+            eletenTable.innerHTML += newWeek;
+        });
+    }
+
+
+    function nexttMonth(){
+        month += 1;
+        let deleteTable = document.querySelectorAll('#delete');
+        deleteTable.forEach((table) => {
+            table.remove();
+        });
+        createTablet();
+    }
+    createTablet()
+
+</script>
+
+</html>
