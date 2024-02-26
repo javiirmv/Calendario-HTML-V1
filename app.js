@@ -5,6 +5,17 @@ const dayWeek = date.getDay();
 const days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
+// function a(input, date, container, modal) {
+//     container.innerHTML += `<div class="addItem">${input}</div>`;
+//     modal.style.display = "none";
+//     let previusEvent = JSON.parse(localStorage.getItem("event"));
+//     let json = {
+//         ...previusEvent,
+//         [date]: input
+//     };
+//     localStorage.setItem("event", JSON.stringify(json));
+//     input = "";
+// }
 
 const startEvent = () => {
     document.querySelectorAll('.month').forEach((day) => {
@@ -14,27 +25,28 @@ const startEvent = () => {
             let date = e.target.id;
             let id = date + "Container";
             let container = document.getElementById(id);
-            let input = document.getElementById('eventName');
-            console.log(id)
+            let input = document.getElementById('eventName').value;
     
             document.getElementById('addItem').addEventListener(
-                'click', () => {
-                    container.innerHTML += `<div class="addItem">${input.value}</div>`;
+                'click', ()=>{
+                    container.innerHTML += `<div class="addItem">${input}</div>`;
                     modal.style.display = "none";
                     let previusEvent = JSON.parse(localStorage.getItem("event"));
                     let json = {
                         ...previusEvent,
-                        [date]: input.value
+                        [date]: input
                     };
                     localStorage.setItem("event", JSON.stringify(json));
-                    input.value = "";
-                }
-            );
+                    input = "";
+                    document.getElementById('addItem').removeEventListener("click");
+                });
+            
+
             document.getElementById('cancel').addEventListener(
                 'click', () => {
                     modal.style.display = "none";
                     input.value = "";
-                    //document.getElementById('addItem').removeEventListener("click");
+                    document.getElementById('addItem').removeEventListener("click");
                 }
             );
     
@@ -83,8 +95,7 @@ const createTable = () => {
             if (JSON.parse(localStorage.getItem("event"))) { 
                 Item = JSON.parse(localStorage.getItem("event"))[dayTime]? `<div class="addItem">${JSON.parse(localStorage.getItem("event"))[dayTime]}</div>`: "";
             } 
-            
-           console.log(dayTime)
+
             newWeek += `
                     <td id="${dayTime}" class="month">
                     <div class="title">${dayV2[0]}</div>
