@@ -47,19 +47,37 @@
 
         }
 
+        .header tr{
+            background-color: #6c5454;
+        }
+
+        .header tr:hover {
+            background-color: #6c5454;
+        }
+
         td:hover {
             background-color: #f0f0f0;
         }
 
         .otherMonth {
-            background-color: #f0f0f0;
+            background-color: #7978786b;
+        }
+
+        #date{
+            background-color: #6c5454;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            padding: 0;
         }
     </style>
 </head>
 
 <body>
     <div clas="container">
-        <div id="date"> </div>
+        <div id="date"></div>
         <table>
             <thead class="header">
                 <tr>
@@ -84,7 +102,7 @@
     var month = date.getMonth() + 1;
     const dayWeek = date.getDay();
     const days = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
-
+    const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
     const getDays = (day, month) => {
         let dayMonth = new Date(2024, month - 1, day).getDay();
@@ -108,15 +126,16 @@
         return week;
     }
 
-    const createTablet = () => {
+    const createTable = () => {
         let eletenTable = document.getElementById('calendar');
         let week = dayMonth(month);
         let previusMonth = dayMonth(month - 1);
         let nextMonth = dayMonth(month + 1);
         week.forEach((day) => {
             let newWeek = `<tr id="delete">`;
-            if (day[0][1] !== 1) {
-                for (let i = 0; i < day[0][1] - 1; i++) {
+            if (day[0][1] !== 1 ) {
+                let a = day[0][1] - 1 == -1 ? i = 6 : day[0][1] - 1;
+                for (let i = 0; i < a ; i++) {
                     newWeek += `<td class="otherMonth">${previusMonth[previusMonth.length - 1][i][0]}</td>`;
                 }
             }
@@ -138,12 +157,14 @@
     function nexttMonth(){
         month += 1;
         let deleteTable = document.querySelectorAll('#delete');
+        document.getElementById("date").innerHTML = `${months[month - 1]}`;
         deleteTable.forEach((table) => {
             table.remove();
         });
-        createTablet();
+        createTable();
     }
-    createTablet()
+    document.getElementById("date").innerHTML = `${months[month - 1]}`;
+    createTable()
 
 </script>
 
