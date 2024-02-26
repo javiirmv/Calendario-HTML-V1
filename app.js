@@ -1,3 +1,8 @@
+// add year in the date 
+// fix a bug in add event, I have remove the event (create a new function) 
+// Update style 
+// add a next month button and previus month button
+
 const date = new Date();
 var month = date.getMonth() + 1;
 var year = date.getFullYear();
@@ -5,17 +10,6 @@ const dayWeek = date.getDay();
 const days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-// function a(input, date, container, modal) {
-//     container.innerHTML += `<div class="addItem">${input}</div>`;
-//     modal.style.display = "none";
-//     let previusEvent = JSON.parse(localStorage.getItem("event"));
-//     let json = {
-//         ...previusEvent,
-//         [date]: input
-//     };
-//     localStorage.setItem("event", JSON.stringify(json));
-//     input = "";
-// }
 
 const startEvent = () => {
     document.querySelectorAll('.month').forEach((day) => {
