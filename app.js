@@ -1,8 +1,46 @@
 const date = new Date();
 var month = date.getMonth() + 1;
+var year = date.getFullYear();
 const dayWeek = date.getDay();
 const days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+
+const startEvent = () => {
+    document.querySelectorAll('.month').forEach((day) => {
+        day.addEventListener("click",(e) => {
+            let modal = document.getElementById('modal');
+            modal.style.display = "flex"
+            let date = e.target.id;
+            let id = date + "Container";
+            let container = document.getElementById(id);
+            let input = document.getElementById('eventName');
+            console.log(id)
+    
+            document.getElementById('addItem').addEventListener(
+                'click', () => {
+                    container.innerHTML += `<div class="addItem">${input.value}</div>`;
+                    modal.style.display = "none";
+                    let previusEvent = JSON.parse(localStorage.getItem("event"));
+                    let json = {
+                        ...previusEvent,
+                        [date]: input.value
+                    };
+                    localStorage.setItem("event", JSON.stringify(json));
+                    input.value = "";
+                }
+            );
+            document.getElementById('cancel').addEventListener(
+                'click', () => {
+                    modal.style.display = "none";
+                    input.value = "";
+                    //document.getElementById('addItem').removeEventListener("click");
+                }
+            );
+    
+        });
+    });
+}
 
 const getDays = (day, month) => {
     let dayMonth = new Date(2024, month - 1, day).getDay();
@@ -16,7 +54,7 @@ const dayMonth = (months) => {
 
     for (let i = 1; i <= dayMonth; i++) {
         let getDay = getDays(i, months);
-        weekV2.push([i, getDay]);
+        weekV2.push([i, getDay, [i, months, year]]);
         if (getDay === 0) {
             week.push(weekV2);
             weekV2 = [];
@@ -40,10 +78,17 @@ const createTable = () => {
             }
         }
         day.forEach((dayV2) => {
+            let dayTime = `${dayV2[2][0]}/${dayV2[2][1]}/${dayV2[2][2]}`;
+            let Item = ""
+            if (JSON.parse(localStorage.getItem("event"))) { 
+                Item = JSON.parse(localStorage.getItem("event"))[dayTime]? `<div class="addItem">${JSON.parse(localStorage.getItem("event"))[dayTime]}</div>`: "";
+            } 
+            
+           console.log(dayTime)
             newWeek += `
-                    <td id="${dayV2[0]}" class="month">
+                    <td id="${dayTime}" class="month">
                     <div class="title">${dayV2[0]}</div>
-                    <div id="${dayV2[0]}Container" class="containerDay"><div>
+                    <div id="${dayTime}Container" class="containerDay">${Item}<div>
                     </td>`;
         });
         if (day.length < 7 && day[0][1] === 1) {
@@ -58,6 +103,7 @@ const createTable = () => {
         newWeek += `</tr>`;
         eletenTable.innerHTML += newWeek;
     });
+    startEvent();
 }
 
 
@@ -73,33 +119,7 @@ function nexttMonth() {
 document.getElementById("date").innerHTML = `${months[month - 1]}`;
 createTable()
 
-document.querySelectorAll('.month').forEach((day) => {
-    day.onclick = (e)=> {
-        let modal = document.getElementById('modal');
-        modal.style.display = "flex"
-        let id = e.target.id + "Container";
-        let container = document.getElementById(id);
-        let input = document.getElementById('eventName');
 
 
-        document.getElementById('addItem').addEventListener(
-            'click', () => {
-                container.innerHTML += `<div class="addItem">${input.value}</div>`;
-                console.log({"hola":input.value});
-                modal.style.display = "none";
-                input.value = "";
-            }
-        );
-        document.getElementById('cancel').addEventListener(
-            'click', () => {
-                modal.style.display = "none";
-                input.value = "";
-
-            }
-        );
 
 
-        //document.getElementById('addItem').removeEventListener('click', () => {});
-        
-    };
-});
