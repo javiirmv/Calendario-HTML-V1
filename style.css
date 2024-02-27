@@ -1,15 +1,21 @@
+:root {
+    --colorHeader: #FBFCFF;
+}
+
 * {
     user-select: none;
+    font-family: Arial;
+    box-sizing: border-box;
 }
 
 body {
+    background-color: #F8F9FD;
     height: 100vh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0px;
-
 }
 
 .container {
@@ -18,79 +24,130 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
-.header tr {
-    background-color: #6c5454;
-}
 
-.header tr:hover {
-    background-color: #6c5454;
-}
 
-#date {
-    background-color: #6c5454;
-    color: white;
+
+
+.header tr td {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
-    padding: 0;
 }
 
-tr {
-    background-color: antiquewhite;
+
+.header tr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(222, 222, 222);
+    padding: 0;
+    margin: 0;
+    height: 50px;
+}
+
+.calendar {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+
+
+.date {
+    display: flex;
+    width: 100%;
+    background-color: var(--colorHeader);
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.titleDate {
+    color: black;
+    background-color: var(--colorHeader);
+}
+
+
+
+
+
+tbody tr {
     display: flex;
     gap: 0px;
     padding: 0px;
     margin: 0px;
 }
 
-td {
+tbody td {
     margin: 0px;
     width: 100px;
     height: 100px;
     display: flex;
     flex-direction: column;
+    background-color: #F8F9FD;
+    border-collapse: collapse;
+    border-right: #cccccc 1px solid;
+    border-bottom: #cccccc 1px solid;
+    overflow: hidden;
+
 }
 
-td:hover {
-    background-color: #f0f0f0;
+.caca td{
+    height: 20px;
+}
 
+table {
+    border: 1px solid rgb(35, 35, 35);
+    border-collapse: collapse;
+
+}
+
+.header td {
+    margin: 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .otherMonth {
-    background-color: #7978786b;
+    background-color: #efefef;
+    color: rgb(65, 65, 65);
+    padding: .5rem;
+    font-size: .85rem;
 }
 
-
-.title {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    font-size: 20px;
-    padding: 0;
+.month {
+    color: rgb(0, 0, 0);
+    padding: .5rem;
+    font-size: .85rem;
+    overflow: hidden;
 }
 
 .containerDay {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;  
-    gap: 2px;         
-}
-
-.addItem{
-    display: flex;
-    justify-content: center;
     align-items: center;
-    width: 100%;
-    background-color: aqua;
-    border-radius: 5px;
+    gap: 2px;
 }
 
-.modal{
+.addItem {
+    display: flex;
+    box-sizing: border-box;
+    padding: .5rem;
+    font-size: smaller;
+    width: 100%;
+    background-color: rgb(18, 144, 255);
+    border-radius: 5px;
+    word-break: break-all;
+}
+
+.modal {
     display: none;
     justify-content: center;
     align-items: center;
@@ -101,15 +158,15 @@ td:hover {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modalContent{
+.modalContent {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     width: auto;
     height: auto;
     padding: 20px;
@@ -117,15 +174,38 @@ td:hover {
     gap: 10px;
 }
 
-.buttons{
+.buttons {
     display: flex;
     gap: 10px;
 }
 
-.buttons input{
-    width: 75px;
-    height: 30px;
+.buttons input {
+    padding: .5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     border-radius: 5px;
     border: none;
     background-color: var(--i);
+    cursor: pointer;
+
+}
+
+.inputName{
+    margin-top: 10px;
+    border: transparent;
+    border-bottom: 1px solid rgb(161, 161, 161); 
+}
+
+.inputName:focus{
+    outline: none;
+}
+
+.date input {
+    border-radius: 5px;
+    padding: 0.7rem;
+    border: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: rgb(18, 144, 255);
+    /* background-color: var(--colorHeader); */
 }

@@ -11,43 +11,49 @@
 <body>
     <div class="modal" id="modal">
         <div class="modalContent">
-           <div style="display: flex; flex-direction: column;"> Nombre del evento: <input type="text" id="eventName"></div>
+            <div style="display: flex; flex-direction: column;"> Nombre del evento: <input type="text" id="eventName" class="inputName">
+            </div>
             <div class="buttons">
-                <input type="button" value="cancelar"  style="--i:#a13a3a;" id="cancel">
-                <input type="button" value="Añadir" style="--i:#369646;" id="sendItem">
+                <input type="button" value="Cancelar" style="--i:#ca3c3c;" id="cancel">
+                <input type="button" value="Añadir" style="--i:#1fb438;" id="sendItem">
             </div>
 
         </div>
     </div>
     <div class="modal" id="modalDelete">
         <div class="modalContent">
-           <div style="display: flex; flex-direction: column;"> Actualizar del evento: <input type="text" id="eventUpdate"></div>
+            <div style="display: flex; flex-direction: column;"> Actualizar del evento: <input type="text"
+                    id="eventUpdate"></div>
             <div class="buttons">
-                <input type="button" value="Cancelar"  style="--i:#a13a3a;" id="cancelDelete">
-                
-                <input type="button" value="Actualizar" style="--i:#369646;" id="Update">
+                <input type="button" value="Eliminar" style="--i:#a13a3a;" id="eventDelete">
+                <input type="button" value="Guardar" style="--i:#369646;" id="Update">
             </div>
 
         </div>
     </div>
     <div clas="container">
-        <div id="date"></div>
-        <table>
-            <thead class="header">
-                <tr>
-                    <td>Lunes</td>
-                    <td>Martes</td>
-                    <td>Miercoles</td>
-                    <td>Jueves</td>
-                    <td>Viernes</td>
-                    <td>Sabado</td>
-                    <td>Domingo</td>
-                </tr>
-            </thead>
-            <tbody id="calendar">
-            </tbody>
-        </table>
-        <input type="button" value="next" onclick="nexttMonth()">
+        <div class="calendar">
+            <div class="date">
+                <input type="button" value="Previous month" id="previous" class="caca2">
+                <div id="date"></div>
+                <input type="button" value="Next month" id="next">
+            </div>
+            <table >
+                <thead class="header">
+                    <tr class="caca">
+                        <td>Lunes</td>
+                        <td>Martes</td>
+                        <td>Miercoles</td>
+                        <td>Jueves</td>
+                        <td>Viernes</td>
+                        <td>Sabado</td>
+                        <td>Domingo</td>
+                    </tr>
+                </thead>
+                <tbody id="calendar" class="calendarClass">
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 

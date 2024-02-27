@@ -1,8 +1,4 @@
-// add year in the date 
-// add delete event in this modal and no que pinches en la casilla y que funcione el modal
-// Update style 
-// add a next month button and previus month button
-
+// que se actualize cuando se cree un evento
 const date = new Date();
 var month = date.getMonth() + 1;
 var year = date.getFullYear();
@@ -31,12 +27,12 @@ const startEvent = () => {
 }
 
 const getDays = (day, month) => {
-    let dayMonth = new Date(2024, month - 1, day).getDay();
+    let dayMonth = new Date(year, month - 1, day).getDay();
     return dayMonth;
 }
 
 const dayMonth = (months) => {
-    let dayMonth = new Date(2024, months, 0).getDate();
+    let dayMonth = new Date(year, months, 0).getDate();
     let week = [];
     let weekV2 = [];
 
@@ -55,26 +51,26 @@ const dayMonth = (months) => {
 const createTable = () => {
     let eletenTable = document.getElementById('calendar');
     let week = dayMonth(month);
-    let previusMonth = dayMonth(month - 1);
+    let previousMonth = dayMonth(month - 1);
     let nextMonth = dayMonth(month + 1);
     week.forEach((day) => {
         let newWeek = `<tr id="delete">`;
         if (day[0][1] !== 1) {
             let a = day[0][1] - 1 == -1 ? i = 6 : day[0][1] - 1;
             for (let i = 0; i < a; i++) {
-                newWeek += `<td class="otherMonth">${previusMonth[previusMonth.length - 1][i][0]}</td>`;
+                newWeek += `<td class="otherMonth">${previousMonth[previousMonth.length - 1][i][0]}</td>`;
             }
         }
         day.forEach((dayV2) => {
             let dayTime = `${dayV2[2][0]}/${dayV2[2][1]}/${dayV2[2][2]}`;
             let Item = ""
             if (JSON.parse(localStorage.getItem("event"))) { 
-                Item = JSON.parse(localStorage.getItem("event"))[dayTime]? `<div class="addItem">${JSON.parse(localStorage.getItem("event"))[dayTime]}</div>`: "";
+                Item = JSON.parse(localStorage.getItem("event"))[dayTime]? `<div class="addItem" id="${dayTime}">${JSON.parse(localStorage.getItem("event"))[dayTime]}</div>`: "";
             } 
 
             newWeek += `
                     <td id="${dayTime}" class="month">
-                    <div class="title">${dayV2[0]}</div>
+                    <div class="title" id="${dayTime}">${dayV2[0]}</div>
                     <div id="${dayTime}Container" class="containerDay">${Item}<div>
                     </td>`;
         });
@@ -92,27 +88,15 @@ const createTable = () => {
     });
     startEvent();
 }
+document.getElementById("date").innerHTML = `<div class="titleDate">${months[month - 1]} de ${year} </div>`;
 
-
-function nexttMonth() {
-    month += 1;
-    let deleteTable = document.querySelectorAll('#delete');
-    document.getElementById("date").innerHTML = `${months[month - 1]}`;
-    deleteTable.forEach((table) => {
-        table.remove();
-    });
-    createTable();
-}
-
-
-document.getElementById("date").innerHTML = `${months[month - 1]}`;
 
 document.getElementById("sendItem").addEventListener('click', (e) => {
     let date = idItem.split("Container")[0];
     document.getElementById(idItem).innerHTML = `<div class="addItem">${input.value}</div>`;
-    let previusEvent = JSON.parse(localStorage.getItem("event"));
+    let previousEvent = JSON.parse(localStorage.getItem("event"));
     let json = {
-        ...previusEvent,
+        ...previousEvent,
         [date]: input.value
     };
     localStorage.setItem("event", JSON.stringify(json));
@@ -125,22 +109,63 @@ document.getElementById("cancel").addEventListener('click', () => {
     input.value = "";
 });
 
-document.getElementById("cancelDelete").addEventListener('click', () => {
+document.getElementById("eventDelete").addEventListener('click', () => {
+    let allEvent = JSON.parse(localStorage.getItem("event"));
+    delete allEvent[idItem.split("Container")[0]];
+    document.getElementById(idItem).innerHTML = "";
+    localStorage.setItem("event", JSON.stringify(allEvent));
     modalDelete.style.display = "none";
-    input.value = "";
+    eventUpdate.value = "";
 });
 
 document.getElementById("Update").addEventListener('click', (e) => {
     let date = idItem.split("Container")[0];
     document.getElementById(idItem).innerHTML = `<div class="addItem">${eventUpdate.value}</div>`;
-    let previusEvent = JSON.parse(localStorage.getItem("event"));
+    let previousEvent = JSON.parse(localStorage.getItem("event"));
     let json = {
-        ...previusEvent,
+        ...previousEvent,
         [date]: eventUpdate.value
     };
     localStorage.setItem("event", JSON.stringify(json));
     modalDelete.style.display = "none";
     eventUpdate.value = "";
 });
+
+document.getElementById("previous").addEventListener('click', () => {
+   
+    month -= 1;
+    if (month === 0) {
+        month = 12;
+        year -= 1;
+    }
+    console.log(month);
+    let deleteTable = document.querySelectorAll('#delete');
+    document.getElementById("date").innerHTML = `<div class="titleDate">${months[month - 1]} de ${year} </div>`;
+
+    deleteTable.forEach((table) => {
+        table.remove();
+    });
+    createTable();
+});
+
+document.getElementById("next").addEventListener('click', () => {
+    console.log("next");
+    month += 1;
+    if (month === 13) {
+        month = 1;
+        year += 1;
+    }
+    console.log(month);
+    let deleteTable = document.querySelectorAll('#delete');
+    document.getElementById("date").innerHTML = `<div class="titleDate">${months[month - 1]} de ${year} </div>`;
+    deleteTable.forEach((table) => {
+        table.remove();
+    });
+    createTable();
+});
+
+if (!localStorage.getItem("event")) {
+    localStorage.setItem("event", JSON.stringify({}));
+}
 
 createTable();
