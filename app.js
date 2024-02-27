@@ -1,5 +1,5 @@
 // add year in the date 
-// fix a bug in add event, I have remove the event (create a new function) 
+// add delete event in this modal and no que pinches en la casilla y que funcione el modal
 // Update style 
 // add a next month button and previus month button
 
@@ -9,41 +9,23 @@ var year = date.getFullYear();
 const dayWeek = date.getDay();
 const days = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+var input = document.getElementById('eventName');
+var eventUpdate = document.getElementById('eventUpdate');
+var modal = document.getElementById('modal');
+var modalDelete = document.getElementById('modalDelete');
+var idItem;
 
 
 const startEvent = () => {
     document.querySelectorAll('.month').forEach((day) => {
         day.addEventListener("click",(e) => {
-            let modal = document.getElementById('modal');
-            modal.style.display = "flex"
-            let date = e.target.id;
-            let id = date + "Container";
-            let container = document.getElementById(id);
-            let input = document.getElementById('eventName').value;
-    
-            document.getElementById('addItem').addEventListener(
-                'click', ()=>{
-                    container.innerHTML += `<div class="addItem">${input}</div>`;
-                    modal.style.display = "none";
-                    let previusEvent = JSON.parse(localStorage.getItem("event"));
-                    let json = {
-                        ...previusEvent,
-                        [date]: input
-                    };
-                    localStorage.setItem("event", JSON.stringify(json));
-                    input = "";
-                    document.getElementById('addItem').removeEventListener("click");
-                });
-            
-
-            document.getElementById('cancel').addEventListener(
-                'click', () => {
-                    modal.style.display = "none";
-                    input.value = "";
-                    document.getElementById('addItem').removeEventListener("click");
-                }
-            );
-    
+            idItem = e.target.id+"Container";
+            if (JSON.parse(localStorage.getItem("event"))[e.target.id]) {
+                modalDelete.style.display = "flex";
+                eventUpdate.value = JSON.parse(localStorage.getItem("event"))[e.target.id];
+            } else{
+                modal.style.display = "flex"
+            }
         });
     });
 }
@@ -121,10 +103,44 @@ function nexttMonth() {
     });
     createTable();
 }
+
+
 document.getElementById("date").innerHTML = `${months[month - 1]}`;
-createTable()
 
+document.getElementById("sendItem").addEventListener('click', (e) => {
+    let date = idItem.split("Container")[0];
+    document.getElementById(idItem).innerHTML = `<div class="addItem">${input.value}</div>`;
+    let previusEvent = JSON.parse(localStorage.getItem("event"));
+    let json = {
+        ...previusEvent,
+        [date]: input.value
+    };
+    localStorage.setItem("event", JSON.stringify(json));
+    modal.style.display = "none";
+    input.value = "";
+});
 
+document.getElementById("cancel").addEventListener('click', () => {
+    modal.style.display = "none";
+    input.value = "";
+});
 
+document.getElementById("cancelDelete").addEventListener('click', () => {
+    modalDelete.style.display = "none";
+    input.value = "";
+});
 
+document.getElementById("Update").addEventListener('click', (e) => {
+    let date = idItem.split("Container")[0];
+    document.getElementById(idItem).innerHTML = `<div class="addItem">${eventUpdate.value}</div>`;
+    let previusEvent = JSON.parse(localStorage.getItem("event"));
+    let json = {
+        ...previusEvent,
+        [date]: eventUpdate.value
+    };
+    localStorage.setItem("event", JSON.stringify(json));
+    modalDelete.style.display = "none";
+    eventUpdate.value = "";
+});
 
+createTable();
