@@ -1,4 +1,3 @@
-// que se actualize cuando se cree un evento
 const date = new Date();
 var month = date.getMonth() + 1;
 var year = date.getFullYear();
