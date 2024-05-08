@@ -240,3 +240,21 @@ table {
     cursor: pointer;
     /* background-color: var(--colorHeader); */
 }
+
+@media (max-width: 800px) {
+
+
+    tbody td {
+        width: 60px;
+        font-size: .7rem;
+    }
+
+    input{
+        font-size: .7rem;
+        padding: .5rem;
+    }
+
+    .month{
+        padding: .1rem;
+    }
+}
