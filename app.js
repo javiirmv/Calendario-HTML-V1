@@ -8,22 +8,25 @@ var input = document.getElementById('eventName');
 var eventUpdate = document.getElementById('eventUpdate');
 var modal = document.getElementById('modal');
 var modalDelete = document.getElementById('modalDelete');
-var idItem;
+var idItem = "13/5/2024";
 
 
 const startEvent = () => {
     document.querySelectorAll('.month').forEach((day) => {
         day.addEventListener("click",(e) => {
-            idItem = e.target.id+"Container";
-            if (JSON.parse(localStorage.getItem("event"))[e.target.id]) {
-                modalDelete.style.display = "flex";
-                eventUpdate.value = JSON.parse(localStorage.getItem("event"))[e.target.id];
-            } else{
-                modal.style.display = "flex"
-            }
+            // createEvent()
+            // idItem = e.target.id+"Container";
+            // if (JSON.parse(localStorage.getItem("event"))[e.target.id]) {
+            //     modalDelete.style.display = "flex";
+            //     eventUpdate.value = JSON.parse(localStorage.getItem("event"))[e.target.id];
+            // } else{
+            //     modal.style.display = "flex"
+            // }
         });
     });
 }
+
+
 
 const getDays = (day, month) => {
     let dayMonth = new Date(year, month - 1, day).getDay();
@@ -31,7 +34,7 @@ const getDays = (day, month) => {
 }
 
 const dayMonth = (months) => {
-    let dayMonth = new Date(year, months, 0).getDate();
+    let dayMonth = new Date(year, months, 0).getDate() ;
     let week = [];
     let weekV2 = [];
 
@@ -49,6 +52,18 @@ const dayMonth = (months) => {
 
 const createTable = () => {
     let eletenTable = document.getElementById('calendar');
+
+    eletenTable.innerHTML += '<tr  id="delete" class="headerDays">' +
+    '<td>Lunes</td>' +
+    '<td>Martes</td>' +
+    '<td>Miercoles</td>' +
+    '<td>Jueves</td>' +
+    '<td>Viernes</td>' +
+    '<td>Sabado</td>' +
+    '<td>Domingo</td>' +
+'</tr>';
+
+
     let week = dayMonth(month);
     let previousMonth = dayMonth(month - 1);
     let nextMonth = dayMonth(month + 1);
@@ -102,6 +117,22 @@ document.getElementById("sendItem").addEventListener('click', (e) => {
     modal.style.display = "none";
     input.value = "";
 });
+
+function createEvent(){
+    let date = idItem.split("Container")[0];
+    console.log(document.getElementById(idItem))
+    document.getElementById(idItem).innerHTML = `<div class="addItem">${input.value}</div>`;
+    let previousEvent = JSON.parse(localStorage.getItem("event"));
+    let json = {
+        ...previousEvent,
+        [date]: input.value
+    };
+    localStorage.setItem("event", JSON.stringify(json));
+    modal.style.display = "none";
+    input.value = "";
+}
+
+
 
 document.getElementById("cancel").addEventListener('click', () => {
     modal.style.display = "none";
@@ -168,3 +199,4 @@ if (!localStorage.getItem("event")) {
 }
 
 createTable();
+createEvent()
