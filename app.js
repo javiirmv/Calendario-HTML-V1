@@ -8,12 +8,12 @@ var input = document.getElementById('eventName');
 var eventUpdate = document.getElementById('eventUpdate');
 var modal = document.getElementById('modal');
 var modalDelete = document.getElementById('modalDelete');
-var idItem = "13/5/2024";
-
+var idItem;
+var eventList = [["14/5/2024","Teatro"], ["19/5/2024","Teatro2"],["19/5/2024","Teatro2"]]
 
 const startEvent = () => {
     document.querySelectorAll('.month').forEach((day) => {
-        day.addEventListener("click",(e) => {
+        day.addEventListener("click", (e) => {
             // createEvent()
             // idItem = e.target.id+"Container";
             // if (JSON.parse(localStorage.getItem("event"))[e.target.id]) {
@@ -34,7 +34,7 @@ const getDays = (day, month) => {
 }
 
 const dayMonth = (months) => {
-    let dayMonth = new Date(year, months, 0).getDate() ;
+    let dayMonth = new Date(year, months, 0).getDate();
     let week = [];
     let weekV2 = [];
 
@@ -54,83 +54,99 @@ const createTable = () => {
     let eletenTable = document.getElementById('calendar');
 
     eletenTable.innerHTML += '<tr  id="delete" class="headerDays">' +
-    '<td>Lunes</td>' +
-    '<td>Martes</td>' +
-    '<td>Miercoles</td>' +
-    '<td>Jueves</td>' +
-    '<td>Viernes</td>' +
-    '<td>Sabado</td>' +
-    '<td>Domingo</td>' +
-'</tr>';
+        '<td>Lunes</td>' +
+        '<td>Martes</td>' +
+        '<td>Miercoles</td>' +
+        '<td>Jueves</td>' +
+        '<td>Viernes</td>' +
+        '<td>Sabado</td>' +
+        '<td>Domingo</td>' +
+        '</tr>';
 
 
     let week = dayMonth(month);
     let previousMonth = dayMonth(month - 1);
     let nextMonth = dayMonth(month + 1);
     week.forEach((day) => {
-        let newWeek = `<tr id="delete">`;
-        if (day[0][1] !== 1) {
-            let a = day[0][1] - 1 == -1 ? i = 6 : day[0][1] - 1;
-            for (let i = 0; i < a; i++) {
-                newWeek += `<td class="otherMonth">${previousMonth[previousMonth.length - 1][i][0]}</td>`;
+        if (day[0]) {
+            let newWeek = `<tr id="delete">`;
+            if (day[0][1] !== 1) {
+                let a = day[0][1] - 1 == -1 ? i = 6 : day[0][1] - 1;
+                for (let i = 0; i < a; i++) {
+                    newWeek += `<td class="otherMonth">${previousMonth[previousMonth.length - 1][i][0]}</td>`;
+                }
             }
-        }
-        day.forEach((dayV2) => {
-            let dayTime = `${dayV2[2][0]}/${dayV2[2][1]}/${dayV2[2][2]}`;
-            let Item = ""
-            if (JSON.parse(localStorage.getItem("event"))) { 
-                Item = JSON.parse(localStorage.getItem("event"))[dayTime]? `<div class="addItem" id="${dayTime}">${JSON.parse(localStorage.getItem("event"))[dayTime]}</div>`: "";
-            } 
+            day.forEach((dayV2) => {
+                let dayTime = `${dayV2[2][0]}/${dayV2[2][1]}/${dayV2[2][2]}`;
+                let Item = ""
 
-            newWeek += `
+                for (let i = 0; i < eventList.length; i++) {
+                    if (eventList[i][0] === dayTime) {
+                        console.log(eventList[i]);
+                        Item = `<div class="addItem" id="${eventList[i][0]}">${eventList[i][1]}</div>`;
+                    }
+                }
+
+                // const foundElement = eventList.filter(element => element[0] === dayTime);
+
+
+                // if (foundElement[0]) {
+                //     console.log(foundElement[0])
+                // }
+                // if (JSON.parse(localStorage.getItem("event"))) { 
+                //     Item = JSON.parse(localStorage.getItem("event"))[dayTime]? `<div class="addItem" id="${dayTime}">${JSON.parse(localStorage.getItem("event"))[dayTime]}</div>`: "";
+                // } 
+
+                newWeek += `
                     <td id="${dayTime}" class="month">
                     <div class="title" id="${dayTime}">${dayV2[0]}</div>
                     <div id="${dayTime}Container" class="containerDay">${Item}<div>
                     </td>`;
-        });
-        if (day.length < 7 && day[0][1] === 1) {
-            nextMonth[0].forEach((next) => {
-                newWeek += `
+            });
+            if (day.length < 7 && day[0][1] === 1) {
+                nextMonth[0].forEach((next) => {
+                    newWeek += `
                     <td class="otherMonth">
                     ${next[0]}
                     </td>`;
-            });
-        }
+                });
+            }
 
-        newWeek += `</tr>`;
-        eletenTable.innerHTML += newWeek;
+            newWeek += `</tr>`;
+            eletenTable.innerHTML += newWeek;
+        }
     });
     startEvent();
 }
 document.getElementById("date").innerHTML = `<div class="titleDate">${months[month - 1]} de ${year} </div>`;
 
 
-document.getElementById("sendItem").addEventListener('click', (e) => {
-    let date = idItem.split("Container")[0];
-    document.getElementById(idItem).innerHTML = `<div class="addItem">${input.value}</div>`;
-    let previousEvent = JSON.parse(localStorage.getItem("event"));
-    let json = {
-        ...previousEvent,
-        [date]: input.value
-    };
-    localStorage.setItem("event", JSON.stringify(json));
-    modal.style.display = "none";
-    input.value = "";
-});
+// document.getElementById("sendItem").addEventListener('click', (e) => {
+//     let date = idItem.split("Container")[0];
+//     document.getElementById(idItem).innerHTML = `<div class="addItem">${input.value}</div>`;
+//     let previousEvent = JSON.parse(localStorage.getItem("event"));
+//     let json = {
+//         ...previousEvent,
+//         [date]: input.value
+//     };
+//     localStorage.setItem("event", JSON.stringify(json));
+//     modal.style.display = "none";
+//     input.value = "";
+// });
 
-function createEvent(){
-    let date = idItem.split("Container")[0];
-    console.log(document.getElementById(idItem))
-    document.getElementById(idItem).innerHTML = `<div class="addItem">${input.value}</div>`;
-    let previousEvent = JSON.parse(localStorage.getItem("event"));
-    let json = {
-        ...previousEvent,
-        [date]: input.value
-    };
-    localStorage.setItem("event", JSON.stringify(json));
-    modal.style.display = "none";
-    input.value = "";
-}
+// function createEvent() {
+//     let date = idItem.split("Container")[0];
+//     console.log(document.getElementById(idItem))
+//     document.getElementById(idItem).innerHTML = `<div class="addItem">${input.value}</div>`;
+//     let previousEvent = JSON.parse(localStorage.getItem("event"));
+//     let json = {
+//         ...previousEvent,
+//         [date]: input.value
+//     };
+//     localStorage.setItem("event", JSON.stringify(json));
+//     modal.style.display = "none";
+//     input.value = "";
+// }
 
 
 
@@ -162,7 +178,7 @@ document.getElementById("Update").addEventListener('click', (e) => {
 });
 
 document.getElementById("previous").addEventListener('click', () => {
-   
+
     month -= 1;
     if (month === 0) {
         month = 12;
@@ -199,4 +215,4 @@ if (!localStorage.getItem("event")) {
 }
 
 createTable();
-createEvent()
+// createEvent()
